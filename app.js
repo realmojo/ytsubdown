@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const axios = require("axios");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 server.setTimeout(500000);
 
 app.use(cors());
@@ -60,7 +60,7 @@ const getYoutubeTransUrl = (key) => {
 app.get("/ytscript", async (req, res) => {
   try {
     if (
-      req.headers.referer !== "https://ytsubdown.f5game.co.kr" ||
+      req.headers.referer !== "https://ytsubdown.f5game.co.kr" &&
       req.headers.referer !== "http://127.0.0.1:5173/"
     ) {
       return res.status(200).send({ message: "no hack" });
