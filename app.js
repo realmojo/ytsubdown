@@ -14,6 +14,25 @@ app.get("/", async (req, res) => {
   res.send("ok");
 });
 
+const getInfo = (html) => {
+  const startOf = html.indexOf("<title>");
+
+  const t = html.substr(startOf + 7, 200);
+  const d = t.split("</title>");
+  const title = d[0];
+
+  const thumbStartOf = html.indexOf('image_src" href="');
+
+  const s = html.substr(thumbStartOf + 17, 200);
+  const f = s.split('">');
+  const thumbnail = f[0];
+
+  return {
+    title,
+    thumbnail,
+  };
+};
+
 const getYoutubeTransKey = (html) => {
   const startOf = html.indexOf("INNERTUBE_API_KEY");
 
@@ -72,6 +91,7 @@ app.get("/ytscript", async (req, res) => {
     const ytRes = await axios.get(url);
     const html = ytRes.data;
 
+    const { title, thumbnail } = getInfo(html);
     const key = getYoutubeTransKey(html);
     const params = getYoutubeTransParams(html);
 
@@ -88,7 +108,7 @@ app.get("/ytscript", async (req, res) => {
 
     const scriptItems = getYoutubeTransScriptItems(response.data);
 
-    return res.status(200).send(scriptItems);
+    return res.status(200).send({ ...scriptItems, title, thumbnail });
   } catch (e) {
     return res.status(200).send({ message: "no data" });
   }
