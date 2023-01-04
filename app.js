@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const axios = require("axios");
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 server.setTimeout(500000);
 
 app.use(cors());
